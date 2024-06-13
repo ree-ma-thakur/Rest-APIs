@@ -12,3 +12,28 @@
 - ![Routing](images/image-3.png)
 - ![Http methods](images/image-4.png)
 - ![Rest Principles](images/image-5.png)
+
+# Project setup
+
+- npm init
+- npm i --save express
+- npm i --save-dev nodemon
+- "start": "nodemon app.js" : Add this to scripts in package.json
+- npm i --save body-parser (to parse incoming requests)
+
+# Implementation
+
+- Return json response from controllers
+- Test APIs using Postman
+
+# CORS
+
+- Cross Origin Resource Sharing
+- By default it is not allowed by browsers
+- ![CORS](images/image-6.png)
+- To solve this CORS error, we need to set some special headers
+- ![Summary](images/image-7.png)
+
+# More Implementation
+
+- ![Node vs rest apis](images/image-8.png)
