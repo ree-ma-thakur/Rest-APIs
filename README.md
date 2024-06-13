@@ -37,3 +37,6 @@
 # More Implementation
 
 - ![Node vs rest apis](images/image-8.png)
+- getPosts API
+- createPost API
+- npm i --save express-validator
