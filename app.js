@@ -2,6 +2,7 @@ const express = require("express");
 const path = require("path");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const multer = require("multer");
 
 const MONGODB_URI =
   "mongodb+srv://reemathakur0214:Noderoot%40123@cluster0.n4dgexg.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0";
@@ -10,8 +11,34 @@ const feedRoutes = require("./routes/feed");
 
 const app = express();
 
+// multer storage
+const fileStorage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "images");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // error null, filename we want to add in folder
+  },
+});
+
+// to filter the file types
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype === "image/png" ||
+    file.mimetype === "image/jpg" ||
+    file.mimetype === "image/jpeg"
+  ) {
+    cb(null, true); // true if we  want to store the file
+  } else {
+    cb(null, false); // false, if we don't want to store the file
+  }
+};
+
 // app.use(bodyParser.urlencoded()); // this is good for form data ;x-www-form-urlencoded
 app.use(bodyParser.json()); // to parse json data from incoming requests; application/json
+app.use(
+  multer({ storage: fileStorage, fileFilter: fileFilter }).single("image")
+);
 app.use("/images", express.static(path.join(__dirname, "images"))); // to statically serve the images path
 
 app.use((req, res, next) => {

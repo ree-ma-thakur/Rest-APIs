@@ -43,3 +43,5 @@
 - npm i --save mongoose
 - To add created & updated at automatically in mongoose schema we can add timestamps:true constructor
 - To statically serve images, add middleware in app.js
+- to parse uploaded files : npm i --save multer
+- add it to app.js

@@ -25,12 +25,19 @@ exports.createPost = (req, res, next) => {
     error.statusCode = 422;
     throw error; // it will now try to reach next error handling function in application : sync code
   }
+  if (!req.file) {
+    console.log("here");
+    const error = new Error("No image");
+    error.statusCode = 422;
+    throw error;
+  }
+  const imageUrl = req.file.path;
   const title = req.body.title;
   const content = req.body.content;
   const post = new Post({
     title: title,
     content: content,
-    imageUrl: "images/download.jpg",
+    imageUrl: imageUrl,
     creator: { name: "Reema" },
   });
   post
