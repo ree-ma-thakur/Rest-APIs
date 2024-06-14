@@ -40,3 +40,6 @@
 - getPosts API
 - createPost API
 - npm i --save express-validator
+- npm i --save mongoose
+- To add created & updated at automatically in mongoose schema we can add timestamps:true constructor
+- To statically serve images, add middleware in app.js
