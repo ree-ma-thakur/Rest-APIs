@@ -8,6 +8,7 @@ const MONGODB_URI =
   "mongodb+srv://reemathakur0214:Noderoot%40123@cluster0.n4dgexg.mongodb.net/messages?retryWrites=true&w=majority&appName=Cluster0";
 
 const feedRoutes = require("./routes/feed");
+const authRoutes = require("./routes/auth");
 
 const app = express();
 
@@ -52,13 +53,15 @@ app.use((req, res, next) => {
 });
 
 app.use("/feed", feedRoutes); // routes that start with /feed will be forwarded to these routes
+app.use("/auth", authRoutes);
 
 // error handling middleware
 app.use((error, req, res, next) => {
   console.log(error);
   const status = error.statusCode || 500;
   const message = error.message;
-  res.status(status).json({ message });
+  const data = error.data;
+  res.status(status).json({ message, data });
 });
 
 mongoose

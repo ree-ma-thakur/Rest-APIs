@@ -45,3 +45,5 @@
 - To statically serve images, add middleware in app.js
 - to parse uploaded files : npm i --save multer
 - add it to app.js
+- To store the password we should hash it
+- npm i --save bcryptjs
