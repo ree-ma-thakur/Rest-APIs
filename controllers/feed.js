@@ -2,6 +2,7 @@ const fs = require("fs");
 const path = require("path");
 const { validationResult } = require("express-validator");
 const Post = require("../models/posts");
+const User = require("../models/user");
 
 exports.getPosts = (req, res, next) => {
   const currentPage = req?.query?.page || 1;
@@ -46,19 +47,29 @@ exports.createPost = (req, res, next) => {
   const imageUrl = req.file.path;
   const title = req.body.title;
   const content = req.body.content;
+  let creator;
   const post = new Post({
     title: title,
     content: content,
     imageUrl: imageUrl,
-    creator: { name: "Reema" },
+    creator: req.userId, // it is set in req in is-auth middleware
   });
   post
     .save()
+    .then(() => {
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      creator = user;
+      user.posts.push(post);
+      return user.save();
+    })
     .then((result) => {
       // 201 for resource creation
       res.status(201).json({
         message: "Post created successfully!",
-        post: result,
+        post: post,
+        creator: { _id: creator._id, name: creator.name },
       });
     })
     .catch((err) => {
@@ -114,6 +125,11 @@ exports.updatePost = (req, res, next) => {
         error.statusCode = 404; // not found
         throw error; // inside async, so it will get caught in catch block
       }
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error("Not authorized");
+        error.statusCode = 403; // not authorized
+        throw error;
+      }
       if (imageUrl !== post.imageUrl) {
         clearImage(post.imageUrl);
       }
@@ -147,12 +163,23 @@ exports.deletePost = (req, res, next) => {
         error.statusCode = 404; // not found
         throw error; // inside async, so it will get caught in catch block
       }
+      if (post.creator.toString() !== req.userId) {
+        const error = new Error("Not authorized");
+        error.statusCode = 403; // not authorized
+        throw error;
+      }
       // Check user authentication
       clearImage(post.imageUrl);
       return Post.findByIdAndDelete(postId);
     })
     .then((result) => {
-      console.log(result);
+      return User.findById(req.userId);
+    })
+    .then((user) => {
+      user.posts.pull(postId); // to remove the post that is deleted from the user
+      return user.save();
+    })
+    .then(() => {
       res.status(200).json({ message: "Deleted post" });
     })
     .catch((err) => {
