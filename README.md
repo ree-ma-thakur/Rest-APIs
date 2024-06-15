@@ -47,3 +47,18 @@
 - add it to app.js
 - To store the password we should hash it
 - npm i --save bcryptjs
+
+# Authentication
+
+- RestAPIs are stateless therefore no session as RestAPIs doesn't care about client; strict decoupling of server & client & every request should be treated standalone
+- Server will not store anything about client
+- After checking the validity of email, password combination then will return token to the client generated on server
+- Token will then be stored in client, then client will attach this token with every subsequent request it sends to server
+- Token can only be validated by the server
+- ![Auth flow](images/image-9.png)
+- ![Auth JWT token](image.png)
+
+# JWT Token
+
+- After comapring password during login we need to generate JWT token
+- npm i --save jsonwebtoken
