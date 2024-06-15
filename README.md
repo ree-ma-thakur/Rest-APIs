@@ -56,9 +56,10 @@
 - Token will then be stored in client, then client will attach this token with every subsequent request it sends to server
 - Token can only be validated by the server
 - ![Auth flow](images/image-9.png)
-- ![Auth JWT token](image.png)
+- ![Auth JWT token](images/image-10.png)
 
 # JWT Token
 
 - After comapring password during login we need to generate JWT token
 - npm i --save jsonwebtoken
+- ![Summary](images/image-11.png)
