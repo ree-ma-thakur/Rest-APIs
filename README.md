@@ -63,3 +63,9 @@
 - After comapring password during login we need to generate JWT token
 - npm i --save jsonwebtoken
 - ![Summary](images/image-11.png)
+
+# Async await
+
+- Instead of then catch we can use async await inside try catch blocks
+- Top level await: we can use await without async, at top level (not inside function but outside the function, inside fun we have to use async fun & then await Promises)
+- https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function
